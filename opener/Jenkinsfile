@@ -1,0 +1,7 @@
+@Library("shared-pipeline@master") _
+
+runPipeline {
+  imageName = "homenet-garage:latest"
+  namespace = "home-automation"
+  deploymentName = "garage-opener"
+}

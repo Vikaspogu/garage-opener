@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    div.text-center
+        form.form-signin(method='POST', action='/relay')
+            img.mb-4(src='https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg', alt='', width='100', height='100')
+            h1.h1.mb-2.font-weight-normal(style='color: #FFFFFF')  1925 Garage Door
+
+            .text-center
+                .form-signin
+                    .text-center
+                    #open
+                        if open
+                            h1.h2.mb-3.font-weight-normal(style='color: #CF6679')  The Door is Open &#x1F62B;
+                        else
+                            h1.h2.mb-3.font-weight-normal(style='color: #CF6679')  The Door is Closed!
+
+            button.btn.btn-lg.btn-primary.btn-block(id="mainButton", type='submit', onclick='changeVisibility()') #{open ? 'Close' : 'Open' }
+
+            button.btn.btn-lg.btn-primary.btn-block(id="loadingButton", disabled='', style='visibility:hidden;')
+                span.spinner-border.spinner-border-sm
+                |   Processing..
+            
+        form(action='/toggleNotifications', method='post')            
+          button.btn.btn-lg.btn-primary.btn-block(id="notifyButton", type='submit') #{sendNotifications ? 'Disable Notifications' : 'Enable Notifications' } 
+           script.
+                function changeVisibility() {
+                    document.getElementById("mainButton").style.visibility = "hidden";
+                    document.getElementById("loadingButton").style.visibility = "visible";
+                }
+      
