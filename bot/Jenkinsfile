@@ -1,7 +1,7 @@
 @Library("shared-pipeline@master") _
 
 runPipeline {
-  imageName = "garage-helper:latest"
+  imageName = "garage-bot:latest"
   namespace = "home-automation"
-  deploymentName = "garage-helper"
+  deploymentName = "garage-bot"
 }
