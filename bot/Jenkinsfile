@@ -4,5 +4,5 @@ runPipeline {
   imageName = "garage-bot:latest"
   namespace = "home-automation"
   deploymentName = "garage-bot"
-  dockerFile = "bot/Dockerfile"
+  subFolder = "bot"
 }

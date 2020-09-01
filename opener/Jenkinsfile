@@ -4,5 +4,5 @@ runPipeline {
   imageName = "homenet-garage:latest"
   namespace = "home-automation"
   deploymentName = "garage-opener"
-  dockerFile = "opener/Dockerfile"
+  subFolder = "opener"
 }
