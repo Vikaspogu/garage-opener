@@ -21,7 +21,6 @@ const client = mqtt.connect(`mqtt://${MQTT_BROKER}`);
 let sendNotifications = true;
 let garageState = "";
 let availability = "";
-let state = "";
 
 rpio.init({
   gpiomem: true,
@@ -134,7 +133,7 @@ client.on("message", (topic, message) => {
       availability = message.toString();
       return;
     case "garage/state":
-      garageState = message;
+      garageState = message.toString();
       return;
     case "garage/set":
       return handleGarageCommands(message);
@@ -147,6 +146,9 @@ client.on("close", () => {
 });
 
 function handleGarageCommands(message) {
+  if (garageState == "") {
+    return;
+  }
   console.log("garage state update to %s", message.toString());
   rpio.write(relayPin, rpio.LOW);
   setTimeout(function () {
