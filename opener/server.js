@@ -162,7 +162,7 @@ setInterval(function () {
     client.publish("garage/state", pubState);
     client.publish("garage/availability", "online");
   }
-}, 10000);
+}, 500);
 
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
