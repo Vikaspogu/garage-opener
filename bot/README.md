@@ -1,4 +1,4 @@
-# Garage Helper Bot
+# Slack Bot using Bolt framework
 
 ### How to run
 

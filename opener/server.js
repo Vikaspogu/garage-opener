@@ -6,13 +6,22 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const schedule = require("node-schedule");
 const morgan = require("morgan");
+const mqtt = require("mqtt");
 const logger = require("./logger");
 const sendSms = require("./twilio");
 const sendSlackNotification = require("./slack");
+require("dotenv").config();
 
 const app = express();
 const PORT = 8080;
+
+const MQTT_BROKER = process.env.MQTT_BROKER;
+const client = mqtt.connect(`mqtt://${MQTT_BROKER}`);
+
 let sendNotifications = true;
+let garageState = "";
+let availability = "";
+let state = "";
 
 rpio.init({
   gpiomem: true,
@@ -39,6 +48,7 @@ function getState() {
   return {
     open: !rpio.read(openPin),
     sendNotifications: sendNotifications,
+    brokerConnected: client.connected,
   };
 }
 
@@ -107,6 +117,50 @@ const garageNotification = {
     },
   ],
 };
+
+//////////////////////////
+/////////////////////////
+client.on("connect", () => {
+  client.subscribe("garage/set");
+  client.subscribe("garage/state");
+  client.subscribe("garage/availability");
+
+  client.publish("garage/availability", "online");
+});
+
+client.on("message", (topic, message) => {
+  switch (topic) {
+    case "garage/availability":
+      availability = message.toString();
+      return;
+    case "garage/state":
+      garageState = message;
+      return;
+    case "garage/set":
+      return handleGarageCommands(message);
+  }
+  console.log("No handler for topic %s", topic);
+});
+
+client.on("close", () => {
+  client.publish("garage/availability", "offline");
+});
+
+function handleGarageCommands(message) {
+  console.log("garage state update to %s", message.toString());
+  rpio.write(relayPin, rpio.LOW);
+  setTimeout(function () {
+    rpio.write(relayPin, rpio.HIGH);
+  }, 1000);
+}
+
+setInterval(function () {
+  if (client.connected) {
+    const pubState = !rpio.read(openPin) ? "open" : "closed";
+    client.publish("garage/state", pubState);
+    client.publish("garage/availability", "online");
+  }
+}, 10000);
 
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
