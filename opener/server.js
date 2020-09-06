@@ -6,8 +6,7 @@ const bodyParser = require("body-parser");
 const schedule = require("node-schedule");
 const morgan = require("morgan");
 const logger = require("./logger");
-const sendSms = require("./twilio");
-const slackNotification = require("./slack");
+const notification = require("./notification");
 const { pinState, toggleRelay } = require("./gpio");
 const { getMqttBrokerStatus } = require("./pub-sub");
 require("dotenv").config();
@@ -73,7 +72,7 @@ schedule.scheduleJob("*/15 * * * *", function () {
     var status = JSON.parse(JSON.stringify(getState()));
     if (status.open) {
       // sendSms("18148731986", "Garage door is open 🔥");
-      slackNotification(garageNotification);
+      notification.sendSlackNotification(garageNotification);
     }
   }
 });

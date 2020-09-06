@@ -28,7 +28,7 @@ client.on("message", (topic, message) => {
     case "garage/set":
       return handleGarageCommands(message);
   }
-  console.log("No handler for topic %s", topic);
+  logger.log("info", "No handler for topic %s", topic);
 });
 
 client.on("close", () => {
