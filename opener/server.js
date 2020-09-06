@@ -18,7 +18,7 @@ const PORT = 8080;
 const MQTT_BROKER = process.env.MQTT_BROKER;
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`);
 
-let sendNotifications = true;
+let notifications = true;
 let garageState = "";
 let availability = "";
 
@@ -36,8 +36,8 @@ app.use(morgan("common"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-// default: 33-open, 11-relay
-const openPin = process.env.OPEN_PIN || 33;
+// default: 40-open, 11-relay
+const openPin = process.env.OPEN_PIN || 40;
 const relayPin = process.env.RELAY_PIN || 11;
 
 rpio.open(openPin, rpio.INPUT, rpio.PULL_UP);
@@ -46,7 +46,7 @@ rpio.open(relayPin, rpio.OUTPUT, rpio.HIGH);
 function getState() {
   return {
     open: !rpio.read(openPin),
-    sendNotifications: sendNotifications,
+    notifications: notifications,
     brokerConnected: client.connected,
   };
 }
@@ -83,12 +83,12 @@ function sleep(ms) {
 }
 
 app.post("/toggleNotifications", function (req, res) {
-  sendNotifications = !sendNotifications;
+  notifications = !notifications;
   res.redirect("/");
 });
 
 schedule.scheduleJob("*/15 * * * *", function () {
-  if (sendNotifications) {
+  if (notifications) {
     var status = JSON.parse(JSON.stringify(getState()));
     if (status.open) {
       // sendSms("18148731986", "Garage door is open 🔥");
@@ -162,7 +162,7 @@ setInterval(function () {
     client.publish("garage/state", pubState);
     client.publish("garage/availability", "online");
   }
-}, 500);
+}, 4000);
 
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
