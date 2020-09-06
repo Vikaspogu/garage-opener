@@ -22,7 +22,7 @@ block content
                 |   Processing..
             
         form(action='/toggleNotifications', method='post')            
-          button.btn.btn-lg.btn-primary.btn-block(id="notifyButton", type='submit') #{sendNotifications ? 'Disable Notifications' : 'Enable Notifications' } 
+          button.btn.btn-lg.btn-primary.btn-block(id="notifyButton", type='submit') #{notifications ? 'Disable Notifications' : 'Enable Notifications' } 
            script.
                 function changeVisibility() {
                     document.getElementById("mainButton").style.visibility = "hidden";
