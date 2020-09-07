@@ -36,7 +36,10 @@ client.on("close", () => {
 });
 
 function handleGarageCommands(message) {
-  if (garageState == "") {
+  if (
+    garageState == "" ||
+    garageState.includes(message.toString().toLowerCase())
+  ) {
     return;
   }
   logger.log("info", "garage state update to %s", message.toString());

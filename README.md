@@ -1,5 +1,5 @@
 <h1 align="center">
-  My Garage Door Opener :door: and Bot :robot:
+  My garage door opener :door: and slack bot :robot:
   <br />
 </h1>
 <br />
