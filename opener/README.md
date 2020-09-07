@@ -1,4 +1,4 @@
-# Homenet Garage Opener
+# Garage Opener
 
 ### How to run
 
