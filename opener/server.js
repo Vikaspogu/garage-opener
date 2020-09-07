@@ -67,7 +67,7 @@ app.post("/toggleNotifications", function (req, res) {
   res.redirect("/");
 });
 
-schedule.scheduleJob("*/15 * * * *", function () {
+schedule.scheduleJob("*/30 * * * *", function () {
   if (notifications) {
     var status = JSON.parse(JSON.stringify(getState()));
     if (status.open) {
