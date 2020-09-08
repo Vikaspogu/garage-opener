@@ -13,16 +13,13 @@ const sendSlackNotification = (messageBody) => {
       "Content-Type": "application/json",
     },
   };
-
   // actual request
   const req = https.request(webhookURL, requestOptions, (res) => {
     let response = "";
-
     res.on("data", (d) => {
       response += d;
     });
   });
-
   // send our message body (was parsed to JSON beforehand)
   req.write(messageBody);
   req.end();
