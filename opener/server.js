@@ -71,7 +71,6 @@ schedule.scheduleJob("*/30 * * * *", function () {
   if (notifications) {
     var status = JSON.parse(JSON.stringify(getState()));
     if (status.open) {
-      // sendSms("18148731986", "Garage door is open 🔥");
       notification.sendSlackNotification(garageNotification);
     }
   }
