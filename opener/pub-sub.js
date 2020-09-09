@@ -4,7 +4,9 @@ const mqtt = require("mqtt");
 const logger = require("./logger");
 const { pinState, toggleRelay } = require("./gpio");
 const MQTT_BROKER = process.env.MQTT_BROKER;
-const client = mqtt.connect(`mqtt://${MQTT_BROKER}`);
+const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
+  clientId: "mqttjs_garageopener",
+});
 
 let garageState = "";
 let availability = "";
@@ -28,7 +30,7 @@ client.on("message", (topic, message) => {
     case "garage/set":
       return handleGarageCommands(message);
   }
-  logger.log("info", "No handler for topic %s", topic);
+  logger.info("No handler for topic %s", topic);
 });
 
 client.on("close", () => {
@@ -42,7 +44,7 @@ function handleGarageCommands(message) {
   ) {
     return;
   }
-  logger.log("info", "garage state update to %s", message.toString());
+  logger.info("garage state update to %s", message.toString());
   toggleRelay();
 }
 
