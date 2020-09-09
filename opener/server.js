@@ -37,7 +37,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use("/assets", express.static("assets"));
-app.use(morgan("common"));
+app.use(
+  morgan("common", {
+    skip: (req, res) => req.url === "/health",
+  })
+);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
@@ -51,6 +55,10 @@ function getState() {
 
 app.get("/", function (req, res) {
   res.render("index", getState());
+});
+
+app.get("/health", function (req, res) {
+  res.send("UP");
 });
 
 app.get("/status", function (req, res) {
