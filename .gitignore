@@ -115,3 +115,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*c
+.DS_Store
