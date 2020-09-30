@@ -36,6 +36,10 @@ module.exports = {
     };
   },
 
+  changeState: (pin) => {
+    rpio.write(pin, rpio.PULL_DOWN);
+  },
+
   toggleRelay: () => {
     // Simulate a button press
     rpio.write(relayPin, rpio.LOW);
