@@ -75,16 +75,6 @@ app.get("/allPins", function (req, res) {
   res.send(JSON.stringify(getStateOfPins()));
 });
 
-app.get("/changeState", function (req, res) {
-  let pin = req.query.pin;
-  logger.info(pin);
-  if (pin) {
-    res.send(JSON.stringify(changeState(pin)));
-  } else {
-    res.status(404).send("Pin not found");
-  }
-});
-
 app.post("/relay", function (req, res) {
   toggleRelay();
   res.redirect("/");
