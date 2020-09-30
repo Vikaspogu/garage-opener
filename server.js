@@ -7,7 +7,7 @@ const schedule = require("node-schedule");
 const morgan = require("morgan");
 const logger = require("./logger");
 const notification = require("./notification");
-const { pinState, toggleRelay } = require("./gpio");
+const { pinState, toggleRelay, getStateOfPins } = require("./gpio");
 const { getMqttBrokerStatus } = require("./pub-sub");
 require("dotenv").config();
 
@@ -63,6 +63,10 @@ app.get("/health", function (req, res) {
 
 app.get("/status", function (req, res) {
   res.send(JSON.stringify(getState()));
+});
+
+app.get("/allPins", function (req, res) {
+  res.send(JSON.stringify(getStateOfPins()));
 });
 
 app.post("/relay", function (req, res) {
