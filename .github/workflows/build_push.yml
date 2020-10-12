@@ -10,7 +10,7 @@ jobs:
     env:
       DOCKER_REGISTRY: docker.io
       DOCKER_IMAGE: vikaspogu/garage
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       DOCKER_TARGET_PLATFORM: linux/arm/v7
     steps:
@@ -34,7 +34,7 @@ jobs:
           echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
           echo ::set-output name=docker_image::${DOCKER_REGISTRY}/${DOCKER_IMAGE}
 
-      - name: Login to Quay
+      - name: Login to Docker
         uses: docker/login-action@v1
         with:
           registry: docker.io
