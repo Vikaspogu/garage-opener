@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REGISTRY: docker.io
-      DOCKER_IMAGE: vikaspogu/garage
+      DOCKER_IMAGE: vikaspogu/garage-opener
       DOCKER_TARGET_PLATFORM: linux/arm/v7
     steps:
       - name: Checkout
