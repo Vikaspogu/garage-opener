@@ -96,7 +96,7 @@ Place the following in your `automations.yaml`:
     to: 'open'
     for: '0:15:00'
   action:
-    service: notify.mobile_app_sm_s20_fe_vikas ## Mobile device
+    service: notify.mobile_app_<device> ## Mobile device
     data:
       message: "The garage has been left open"
       data:
