@@ -6,14 +6,8 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const logger = require("./logger");
 const notification = require("./notification");
-const {
-  pinState,
-  toggleRelay,
-  getStateOfPins,
-  changeState,
-} = require("./gpio");
+const { pinState, toggleRelay, getStateOfPins } = require("./gpio");
 const { getMqttBrokerStatus } = require("./pub-sub");
-const { log } = require("util");
 require("dotenv").config();
 
 const app = express();
