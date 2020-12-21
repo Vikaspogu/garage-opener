@@ -3,6 +3,7 @@
 const mqtt = require("mqtt");
 const logger = require("./logger");
 const { pinState, toggleRelay } = require("./gpio");
+const notification = require("./notification");
 const MQTT_BROKER = process.env.MQTT_BROKER;
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
   clientId: "mqttjs_garageopener",
@@ -46,6 +47,7 @@ function handleGarageCommands(message) {
   }
   logger.info("garage state update to %s", message.toString());
   toggleRelay();
+  notification.startStopTimer(message.toString());
 }
 
 setInterval(function () {

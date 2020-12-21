@@ -13,17 +13,13 @@
 
 # Overview
 
-A Node.js, MQTT based garage door opener. This project is compatible with Home Assistant's "MQTT Cover" platform. It responds to HASS's open and close commands and reports door status to keep HASS's GUI in sync with the door state
-
-This project is deployed as a container in kubernetes
+A Node.js, Rest and MQTT based garage door opener. This project is compatible with Home Assistant's "MQTT Cover" platform. It responds to HASS's open and close commands and reports door status to keep HASS's GUI in sync with the door state. This project is deployed as a container in kubernetes cluster.
 
 [NodeJS setup with GPIO interface](https://vikaspogu.dev/posts/pi-garage-k3s/)
 
 ## Configuring Home Assistant
 
 ### MQTT Cover: Complete configuration
-
-_Note: If you want to guard against your GarHAge configuration breaking if a Home Assistant update changes one of its defaults, the complete configuration below can be added._
 
 ```
 cover:
@@ -79,7 +75,7 @@ Place the following in your `automations.yaml`:
     data: {}
 ```
 
-Of course, you can replace `30` with any length of time in minutes you wish. Be sure to replace `cover.garage_door` if the name of your garage door in Home Assistant is different.
+Of course, you can replace `15` with any length of time in minutes you wish. Be sure to replace `cover.garage_door` if the name of your garage door in Home Assistant is different.
 
 #### Notify device when garage door opens or closes
 
@@ -107,7 +103,7 @@ Place the following in your `automations.yaml`:
 
 Replace `notify.your_device_name_here` with the name assigned to your device by Home Assistant, Be sure to replace `cover.garage_door` if the name of your garage door in Home Assistant is different.
 
-Now, when your garage door has been open for 15 minutes, you will receive a Home Assistant notification saying "Garage Door 1 has been open for 15 minutes!", and the notification will contain a button labelled "Close Garage" which will close your garage when tapped.
+Now, when your garage door has been open for 15 minutes, you will receive a Home Assistant notification saying "The garage has been left open", and the notification will contain a button labelled "Close Garage" which will close your garage when tapped.
 
 #### Close button action
 
