@@ -5,8 +5,21 @@ const logger = require("./logger");
 const { pinState, toggleRelay } = require("./gpio");
 const notification = require("./notification");
 const MQTT_BROKER = process.env.MQTT_BROKER;
+const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8);
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
-  clientId: "mqttjs_garageopener",
+  keepalive: 30,
+  clientId: clientId,
+  protocolId: "MQTT",
+  protocolVersion: 4,
+  clean: true,
+  reconnectPeriod: 1000,
+  connectTimeout: 30 * 1000,
+  will: {
+    topic: "WillMsg",
+    payload: "Connection Closed abnormally..!",
+    qos: 0,
+    retain: false,
+  },
 });
 
 let garageState = "";
