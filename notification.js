@@ -57,7 +57,7 @@ let enableNotifications = true;
 var timeout;
 
 function notificationTimer() {
-  timeout = setInterval(() => {
+  timeout = setTimeout(() => {
     if (enableNotifications) {
       logger.info("Start notification timer for 30 minutes....");
       sendSlackNotification(garageNotificationBody);
@@ -69,7 +69,7 @@ const startStopTimer = (state) => {
   if (state.toLowerCase() == "open") {
     notificationTimer();
   } else if (state.toLowerCase() == "close") {
-    clearInterval(timeout);
+    clearTimeout(timeout);
   }
 };
 
