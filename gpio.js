@@ -3,6 +3,8 @@
 const rpio = require("rpio");
 require("dotenv").config();
 
+rpio.init({ gpiomem: true });
+
 // default: 38-open, 11-relay
 const openPin = process.env.OPEN_PIN || 38;
 const relayPin = process.env.RELAY_PIN || 11;
