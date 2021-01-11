@@ -62,7 +62,7 @@ function notificationTimer() {
     if (enableNotifications) {
       sendSlackNotification(garageNotificationBody);
     }
-  }, 1800 * 100);
+  }, process.env.NOTIFICATION_TIME);
 }
 
 const startStopTimer = (state) => {
