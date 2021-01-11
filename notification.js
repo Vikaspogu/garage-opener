@@ -37,6 +37,7 @@ const sendSlackNotification = (messageBody) => {
       response += d;
     });
   });
+  logger.info("Sending slack notification");
   // send our message body (was parsed to JSON beforehand)
   req.write(messageBody);
   req.end();
@@ -59,16 +60,17 @@ var timeout;
 function notificationTimer() {
   timeout = setTimeout(() => {
     if (enableNotifications) {
-      logger.info("Start notification timer for 30 minutes....");
       sendSlackNotification(garageNotificationBody);
     }
-  }, 1800 * 1000);
+  }, 1800 * 100);
 }
 
 const startStopTimer = (state) => {
   if (state.toLowerCase() == "open") {
+    logger.info("Start notification timer");
     notificationTimer();
-  } else if (state.toLowerCase() == "close") {
+  } else if (state.toLowerCase() == "closed") {
+    logger.info("Stop notification timer");
     clearTimeout(timeout);
   }
 };

@@ -34,12 +34,21 @@ client.on("connect", () => {
 });
 
 client.on("message", (topic, message) => {
+  let messageStr = message.toString();
   switch (topic) {
     case "garage/availability":
-      availability = message.toString();
+      availability = messageStr;
       return;
     case "garage/state":
-      garageState = message.toString();
+      if (garageState != messageStr) {
+        logger.info(
+          "Garage state %s, incoming message %s",
+          garageState,
+          messageStr
+        );
+        notification.startStopTimer(messageStr);
+      }
+      garageState = messageStr;
       return;
     case "garage/set":
       return handleGarageCommands(message);
@@ -52,15 +61,12 @@ client.on("close", () => {
 });
 
 function handleGarageCommands(message) {
-  if (
-    garageState == "" ||
-    garageState.includes(message.toString().toLowerCase())
-  ) {
+  let messageStrLwrcase = message.toString().toLowerCase();
+  if (garageState == "" || garageState.includes(messageStrLwrcase)) {
     return;
   }
-  logger.info("garage state update to %s", message.toString());
+  logger.info("garage state update to %s", messageStrLwrcase);
   toggleRelay();
-  notification.startStopTimer(message.toString());
 }
 
 setInterval(function () {

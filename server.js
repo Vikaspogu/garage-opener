@@ -46,15 +46,18 @@ app.get("/status", function (req, res) {
 });
 
 app.get("/allPins", function (req, res) {
+  logger.info("Get state of pins");
   res.send(JSON.stringify(getStateOfPins()));
 });
 
 app.post("/relay", function (req, res) {
+  logger.info("Relay toggled");
   toggleRelay();
   res.redirect("/");
 });
 
 app.post("/toggleNotifications", function (req, res) {
+  logger.info("Notifications toggled");
   notification.toggleNotifications();
   res.redirect("/");
 });
