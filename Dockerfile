@@ -11,7 +11,7 @@ RUN npm install
 
 # Add the files to arm image
 # FROM arm32v7/node:alpine
-FROM node:15.5.1-slim
+FROM node:15.5.1-alpine3.10
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
