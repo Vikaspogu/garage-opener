@@ -1,4 +1,4 @@
-FROM arm32v7/node:alpine as builder
+FROM arm32v7/node:15.5.1-alpine3.10 as builder
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
@@ -9,7 +9,7 @@ RUN apk add --no-cache make gcc g++ python && \
 RUN npm install
 
 # Add the files to arm image
-FROM arm32v7/node:alpine
+FROM arm32v7/node:15.5.1-alpine3.10
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
