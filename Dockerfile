@@ -1,5 +1,5 @@
 # FROM arm32v7/node:alpine as builder
-FROM node:14.15.4-alpine3.10 as builder
+FROM node:10.23.1-alpine3.9 as builder
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
@@ -11,7 +11,7 @@ RUN npm install
 
 # Add the files to arm image
 # FROM arm32v7/node:alpine
-FROM node:14.15.4-alpine3.10
+FROM node:10.23.1-alpine3.9
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
