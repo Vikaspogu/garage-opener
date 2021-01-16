@@ -10,7 +10,7 @@ jobs:
     env:
       DOCKER_REGISTRY: docker.io
       DOCKER_IMAGE: vikaspogu/garage-opener
-      DOCKER_TARGET_PLATFORM: linux/arm/v7
+      DOCKER_TARGET_PLATFORM: linux/arm64, linux/amd64, linux/arm/v7, linux/arm/v6
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,14 +19,12 @@ jobs:
         uses: docker/setup-qemu-action@v1
         with:
           platforms: all
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
         with:
           version: latest
-
-      - name: Builder instance name
-        run: echo ${{ steps.buildx.outputs.name }}
 
       - name: Prepare
         if: success()
