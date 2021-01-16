@@ -10,7 +10,7 @@ jobs:
     env:
       DOCKER_REGISTRY: docker.io
       DOCKER_IMAGE: vikaspogu/garage-opener
-      # DOCKER_TARGET_PLATFORM: linux/arm/v7
+      DOCKER_TARGET_PLATFORM: linux/arm/v7
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,10 +25,14 @@ jobs:
         with:
           version: latest
 
+      - name: Builder instance name
+        run: echo ${{ steps.buildx.outputs.name }}
+
       - name: Prepare
         if: success()
         id: prepare
         run: |
+          echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
           echo ::set-output name=docker_image::${DOCKER_REGISTRY}/${DOCKER_IMAGE}
 
       - name: Docker meta
@@ -50,6 +54,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          # platforms: ${{ steps.prepare.outputs.docker_platform }}
+          platforms: ${{ steps.prepare.outputs.docker_platform }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           push: true
