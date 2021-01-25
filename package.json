@@ -16,6 +16,7 @@
     "moment-timezone": "^0.5.31",
     "morgan": "^1.10.0",
     "mqtt": "^4.2.1",
+    "prom-client": "^13.1.0",
     "pug": "^3.0.0",
     "rpio": "^2.2.0",
     "twilio": "^3.49.0",
