@@ -1,9 +1,8 @@
 "use strict";
 
 const rpio = require("rpio");
+const logger = require("./logger");
 require("dotenv").config();
-
-rpio.init({ gpiomem: true });
 
 // default: 38-open, 11-relay
 const openPin = process.env.OPEN_PIN || 38;
@@ -30,6 +29,7 @@ module.exports = {
 
   toggleRelay: () => {
     // Simulate a button press
+    logger.info("toggling relay...");
     rpio.write(relayPin, rpio.LOW);
     setTimeout(async function () {
       rpio.write(relayPin, rpio.HIGH);
