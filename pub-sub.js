@@ -75,7 +75,7 @@ setInterval(function () {
     client.publish("garage/state", pubState);
     client.publish("garage/availability", "online");
   }
-}, 4000);
+}, 1000);
 
 module.exports = {
   getMqttBrokerStatus: () => {
