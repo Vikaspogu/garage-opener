@@ -29,6 +29,7 @@ app.use("/assets", express.static("assets"));
 app.use(
   morgan("common", {
     skip: (req, res) => req.url === "/health",
+    skip: (req, res) => req.url === "/metrics",
   })
 );
 app.set("views", path.join(__dirname, "views"));
