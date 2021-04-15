@@ -54,7 +54,7 @@ const sendSms = (phone, message) => {
     .then((message) => console.log(message.sid));
 };
 
-let enableNotifications = true;
+let enableNotifications = false;
 var timeout;
 
 function notificationTimer() {
