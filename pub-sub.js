@@ -2,8 +2,7 @@
 
 const mqtt = require("mqtt");
 const logger = require("./logger");
-const { pinState, toggleRelay } = require("./gpio");
-const notification = require("./notification");
+const { toggleRelay } = require("./gpio");
 const MQTT_BROKER = process.env.MQTT_BROKER;
 const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8);
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
@@ -27,28 +26,28 @@ let availability = "";
 
 client.on("connect", () => {
   client.subscribe("garage/set");
-  client.subscribe("garage/state");
+  client.subscribe("zigbee2mqtt/Garage Door Sensor");
   client.subscribe("garage/availability");
 
   client.publish("garage/availability", "online");
 });
 
 client.on("message", (topic, message) => {
-  let messageStr = message.toString();
   switch (topic) {
     case "garage/availability":
-      availability = messageStr;
+      availability = message.toString();
       return;
-    case "garage/state":
-      if (garageState != messageStr) {
+    case "zigbee2mqtt/Garage Door Sensor":
+      var jsonObj = JSON.parse(message);
+      var messageState = jsonObj.contact == true ? "closed" : "open";
+      if (garageState != messageState) {
         logger.info(
           "Garage state %s, incoming message %s",
           garageState,
-          messageStr
+          messageState
         );
-        notification.startStopTimer(messageStr);
       }
-      garageState = messageStr;
+      garageState = messageState;
       return;
     case "garage/set":
       return handleGarageCommands(message);
@@ -69,15 +68,10 @@ function handleGarageCommands(message) {
   toggleRelay();
 }
 
-setInterval(function () {
-  if (client.connected) {
-    const pubState = pinState() ? "open" : "closed";
-    client.publish("garage/state", pubState);
-    client.publish("garage/availability", "online");
-  }
-}, 1000);
-
 module.exports = {
+  garageState: () => {
+    return garageState;
+  },
   getMqttBrokerStatus: () => {
     return client.connected;
   },
