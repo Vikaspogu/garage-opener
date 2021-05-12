@@ -68,6 +68,12 @@ function handleGarageCommands(message) {
   toggleRelay();
 }
 
+setInterval(function () {
+  if (client.connected) {
+    client.publish("garage/availability", "online");
+  }
+}, 1000);
+
 module.exports = {
   garageState: () => {
     return garageState;

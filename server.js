@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const helmet = require("helmet");
 const path = require("path");
 const morgan = require("morgan");
 const client = require("prom-client");
@@ -14,12 +15,16 @@ const app = express();
 const PORT = 8080;
 
 app.use(express.json());
+app.use(helmet());
 app.use(express.static("public"));
 app.use("/assets", express.static("assets"));
 app.use(
   morgan("common", {
     skip: function (req, res) {
       return req.url == "/health";
+    },
+    skip: function (req, res) {
+      return req.url == "/metrics";
     },
   })
 );
