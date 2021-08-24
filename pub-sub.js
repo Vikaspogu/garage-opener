@@ -26,7 +26,7 @@ let availability = "";
 
 client.on("connect", () => {
   client.subscribe("garage/set");
-  client.subscribe("zigbee2mqtt/Garage Door Sensor");
+  client.subscribe("zigbee2mqtt/GarageDoor");
   client.subscribe("garage/availability");
 
   client.publish("garage/availability", "online");
@@ -37,7 +37,7 @@ client.on("message", (topic, message) => {
     case "garage/availability":
       availability = message.toString();
       return;
-    case "zigbee2mqtt/Garage Door Sensor":
+    case "zigbee2mqtt/GarageDoor":
       var jsonObj = JSON.parse(message);
       var messageState = jsonObj.contact == true ? "closed" : "open";
       if (garageState != messageState) {
