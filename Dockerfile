@@ -1,4 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:17-alpine as builder
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
@@ -8,7 +8,7 @@ RUN apk add --no-cache make gcc g++ python3 && \
     apk del make gcc g++ python3
 RUN npm install
 
-FROM node:14-alpine
+FROM node:17-alpine
 RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
