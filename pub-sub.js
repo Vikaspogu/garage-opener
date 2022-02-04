@@ -1,84 +1,84 @@
-"use strict";
+"use strict"
 
-const mqtt = require("mqtt");
-const logger = require("./logger");
-const { toggleRelay } = require("./gpio");
-const MQTT_BROKER = process.env.MQTT_BROKER;
-const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8);
+const mqtt = require("mqtt")
+const logger = require("./logger")
+const { toggleRelay } = require("./gpio")
+const MQTT_BROKER = process.env.MQTT_BROKER
+const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8)
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
   keepalive: 30,
   clientId: clientId,
   protocolId: "MQTT",
   protocolVersion: 4,
-  clean: true,
+  clean: false,
   reconnectPeriod: 1000,
   connectTimeout: 30 * 1000,
   will: {
     topic: "WillMsg",
     payload: "Connection Closed abnormally..!",
-    qos: 0,
+    qos: 2,
     retain: false,
   },
-});
+})
 
-let garageState = "";
-let availability = "";
+let garageState = ""
+let availability = ""
 
 client.on("connect", () => {
-  client.subscribe("garage/set");
-  client.subscribe("zigbee2mqtt/GarageDoor");
-  client.subscribe("garage/availability");
+  client.subscribe("garage/set")
+  client.subscribe("zigbee2mqtt/GarageDoor")
+  client.subscribe("garage/availability")
 
-  client.publish("garage/availability", "online");
-});
+  client.publish("garage/availability", "online")
+})
 
 client.on("message", (topic, message) => {
   switch (topic) {
     case "garage/availability":
-      availability = message.toString();
-      return;
+      availability = message.toString()
+      return
     case "zigbee2mqtt/GarageDoor":
-      var jsonObj = JSON.parse(message);
-      var messageState = jsonObj.contact == true ? "closed" : "open";
+      var jsonObj = JSON.parse(message)
+      var messageState = jsonObj.contact == true ? "closed" : "open"
       if (garageState != messageState) {
         logger.info(
           "Garage state %s, incoming message %s",
           garageState,
           messageState
-        );
+        )
       }
-      garageState = messageState;
-      return;
+      garageState = messageState
+      return
     case "garage/set":
-      return handleGarageCommands(message);
+      return handleGarageCommands(message)
   }
-  logger.info("No handler for topic %s", topic);
-});
+  logger.info("No handler for topic %s", topic)
+})
 
 client.on("close", () => {
-  client.publish("garage/availability", "offline");
-});
+  client.publish("garage/availability", "offline")
+})
 
 function handleGarageCommands(message) {
-  let messageStrLwrcase = message.toString().toLowerCase();
+  let messageStrLwrcase = message.toString().toLowerCase()
   if (garageState == "" || garageState.includes(messageStrLwrcase)) {
-    return;
+    return
   }
-  logger.info("garage state update to %s", messageStrLwrcase);
-  toggleRelay();
+  logger.info("garage state update to %s", messageStrLwrcase)
+  toggleRelay()
 }
 
 setInterval(function () {
   if (client.connected) {
-    client.publish("garage/availability", "online");
+    client.publish("garage/availability", "online")
   }
-}, 1000);
+}, 1000)
 
 module.exports = {
   garageState: () => {
-    return garageState;
+    return garageState
   },
   getMqttBrokerStatus: () => {
-    return client.connected;
+    return client.connected
   },
-};
+}
