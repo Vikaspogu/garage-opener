@@ -3,9 +3,9 @@ RUN mkdir /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package*.json /app/
-RUN apk add --no-cache make gcc g++ python && \
+RUN apk add --no-cache make gcc g++ python3 && \
     npm install --production --silent && \
-    apk del make gcc g++ python
+    apk del make gcc g++ python3
 RUN npm install
 
 FROM node:14-alpine
