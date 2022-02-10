@@ -18,13 +18,12 @@ app.use(helmet())
 app.use(express.static("public"))
 app.use("/assets", express.static("assets"))
 app.use(
-  logger(config["morgan.debug.level"], {
+  morgan("common", {
     skip: function (req, res) {
-      if (req.url == "/health") {
-        return true
-      } else {
-        return false
-      }
+      return req.url == "/health"
+    },
+    skip: function (req, res) {
+      return req.url == "/metrics"
     },
   })
 )
