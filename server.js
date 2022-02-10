@@ -18,13 +18,8 @@ app.use(helmet())
 app.use(express.static("public"))
 app.use("/assets", express.static("assets"))
 app.use(
-  morgan("common", {
-    skip: function (req, res) {
-      return req.url == "/health"
-    },
-    skip: function (req, res) {
-      return req.url == "/metrics"
-    },
+  morgan("combined", {
+    skip: (req, res) => req.url === "/health",
   })
 )
 app.set("views", path.join(__dirname, "views"))
