@@ -16,7 +16,7 @@ const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
   will: {
     topic: "WillMsg",
     payload: "Connection Closed abnormally..!",
-    qos: 2,
+    qos: 0,
     retain: false,
   },
 })
@@ -66,6 +66,7 @@ function handleGarageCommands(message) {
   }
   logger.info("garage state update to %s", messageStrLwrcase)
   toggleRelay()
+  client.publish("garage/set", "")
 }
 
 setInterval(function () {
