@@ -61,10 +61,10 @@ client.on("close", () => {
 
 function handleGarageCommands(message) {
   let messageStrLwrcase = message.toString().toLowerCase()
+  logger.info("garage state update to %s", messageStrLwrcase)
   if (garageState == "" || garageState.includes(messageStrLwrcase)) {
     return
   }
-  logger.info("garage state update to %s", messageStrLwrcase)
   toggleRelay()
   client.publish("garage/set", "")
 }
