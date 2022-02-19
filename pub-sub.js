@@ -61,12 +61,22 @@ client.on("close", () => {
 
 function handleGarageCommands(message) {
   let messageStrLwrcase = message.toString().toLowerCase()
-  logger.info("garage state update to %s", messageStrLwrcase)
+  logger.info(
+    "incoming state for garage %s; current state %s",
+    messageStrLwrcase,
+    garageState
+  )
   if (
     garageState == "" ||
-    garageState == "home" ||
+    messageStrLwrcase == "" ||
+    messageStrLwrcase === "home" ||
     garageState.includes(messageStrLwrcase)
   ) {
+    logger.info(
+      "not a valid state for incoming message %s; current state %s",
+      messageStrLwrcase,
+      garageState
+    )
     return
   }
   toggleRelay()
