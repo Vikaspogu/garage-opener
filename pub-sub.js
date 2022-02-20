@@ -69,7 +69,6 @@ function handleGarageCommands(message) {
   if (
     garageState == "" ||
     messageStrLwrcase == "" ||
-    messageStrLwrcase === "home" ||
     garageState.includes(messageStrLwrcase)
   ) {
     logger.info(
