@@ -6,18 +6,15 @@ const { toggleRelay } = require("./gpio")
 const MQTT_BROKER = process.env.MQTT_BROKER
 const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8)
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
-  keepalive: 30,
   clientId: clientId,
   protocolId: "MQTT",
   protocolVersion: 4,
   clean: false,
-  reconnectPeriod: 1000,
-  connectTimeout: 30 * 1000,
   will: {
     topic: "WillMsg",
     payload: "Connection Closed abnormally..!",
     qos: 1,
-    retain: true,
+    retain: false,
   },
 })
 
@@ -78,12 +75,7 @@ function handleGarageCommands(message) {
     )
     return
   }
-  if (
-    messageStrLwrcase == "home" ||
-    messageStrLwrcase == "not_home" ||
-    messageStrLwrcase == "open" ||
-    messageStrLwrcase == "close"
-  ) {
+  if (messageStrLwrcase == "open" || messageStrLwrcase == "close") {
     toggleRelay()
   }
 }
