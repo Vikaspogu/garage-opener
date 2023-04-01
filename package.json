@@ -19,7 +19,7 @@
     "prom-client": "^14.0.0",
     "pug": "^3.0.1",
     "rpio": "^2.2.0",
-    "twilio": "^3.49.0",
+    "twilio": "^4.0.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
