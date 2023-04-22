@@ -4,12 +4,13 @@ const mqtt = require("mqtt")
 const logger = require("./logger")
 const { toggleRelay } = require("./gpio")
 const MQTT_BROKER = process.env.MQTT_BROKER
-const clientId = "mqttjs_" + Math.random().toString(16).substr(2, 8)
+const clientId = "mqttjs_" + Math.random().toString(6)
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`, {
   clientId: clientId,
   protocolId: "MQTT",
   protocolVersion: 4,
   clean: false,
+  reconnectPeriod: 1,
   will: {
     topic: "WillMsg",
     payload: "Connection Closed abnormally..!",
@@ -52,8 +53,22 @@ client.on("message", (topic, message) => {
   logger.info("No handler for topic %s", topic)
 })
 
+client.on("error", function (err) {
+  logger.info("Error: " + err)
+  if (err.code == "ENOTFOUND") {
+    logger.info(
+      "Network error, make sure you have an active internet connection"
+    )
+  }
+})
+
 client.on("close", () => {
   client.publish("garage/availability", "offline")
+  logger.info("Connection closed by client")
+})
+
+client.on("reconnect", function () {
+  logger.info("Client trying a reconnection")
 })
 
 function handleGarageCommands(message) {

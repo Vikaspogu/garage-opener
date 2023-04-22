@@ -25,18 +25,9 @@ app.use(
 function getState() {
   return {
     open: garageState(),
-    notifications: notification.notificationsStatus(),
     brokerConnected: getMqttBrokerStatus(),
   }
 }
-
-app.get("/", function (req, res) {
-  res.render("index", getState())
-})
-
-app.get("/health", function (req, res) {
-  res.send("UP")
-})
 
 app.get("/status", function (req, res) {
   res.send(JSON.stringify(getState()))
@@ -45,12 +36,6 @@ app.get("/status", function (req, res) {
 app.post("/relay", function (req, res) {
   logger.info("Relay toggled")
   toggleRelay()
-  res.redirect("/")
-})
-
-app.post("/toggleNotifications", function (req, res) {
-  logger.info("Notifications toggled")
-  notification.toggleNotifications()
   res.redirect("/")
 })
 
