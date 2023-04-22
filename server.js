@@ -5,7 +5,6 @@ const helmet = require("helmet")
 const path = require("path")
 const morgan = require("morgan")
 const logger = require("./logger")
-const notification = require("./notification")
 const { toggleRelay } = require("./gpio")
 const { getMqttBrokerStatus, garageState } = require("./pub-sub")
 require("dotenv").config()
@@ -22,8 +21,6 @@ app.use(
     skip: (req, res) => req.url === "/health",
   })
 )
-app.set("views", path.join(__dirname, "views"))
-app.set("view engine", "pug")
 
 function getState() {
   return {
