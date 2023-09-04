@@ -8,6 +8,7 @@ require("dotenv").config();
 const relayPin = process.env.RELAY_PIN || 11;
 
 rpio.open(relayPin, rpio.OUTPUT, rpio.HIGH);
+rpio.init({gpiomem: false}); 
 
 module.exports = {
   toggleRelay: () => {
