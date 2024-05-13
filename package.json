@@ -20,6 +20,6 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "dot-prop": "8.0.2"
+    "dot-prop": "9.0.0"
   }
 }
